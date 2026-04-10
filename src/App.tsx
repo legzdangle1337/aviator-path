@@ -42,6 +42,8 @@ const App = () => (
             <Route path="/update-password" element={<UpdatePassword />} />
             <Route path="/schools" element={<Schools />} />
             <Route path="/schools/:slug" element={<SchoolProfile />} />
+            <Route path="/cadet-programs" element={<CadetPrograms />} />
+            <Route path="/cadet-programs/:slug" element={<CadetProgramDetail />} />
             <Route path="/compare" element={<Compare />} />
             <Route
               path="/admin/*"
