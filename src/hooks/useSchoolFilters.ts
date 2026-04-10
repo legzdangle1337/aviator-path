@@ -59,6 +59,7 @@ export function useSchoolFilters() {
   const filters: SchoolFilters = useMemo(() => {
     const p = searchParams;
     return {
+      search: p.get("search") || "",
       state: p.get("state") || "",
       partType: p.get("part") || "",
       costMin: Number(p.get("costMin")) || DEFAULT_FILTERS.costMin,
@@ -82,6 +83,7 @@ export function useSchoolFilters() {
     (updater: Partial<SchoolFilters> | ((prev: SchoolFilters) => Partial<SchoolFilters>)) => {
       setSearchParams((prev) => {
         const currentFilters: SchoolFilters = {
+          search: prev.get("search") || "",
           state: prev.get("state") || "",
           partType: prev.get("part") || "",
           costMin: Number(prev.get("costMin")) || DEFAULT_FILTERS.costMin,
