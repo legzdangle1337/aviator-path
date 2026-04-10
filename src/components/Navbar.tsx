@@ -37,11 +37,11 @@ export function Navbar() {
 
         {/* Desktop CTA */}
         <div className="hidden lg:flex items-center gap-4">
-          <a href="#signin" className="text-sm font-medium text-navy hover:text-navy/80 transition-colors">
+          <a href="/login" className="text-sm font-medium text-navy hover:text-navy/80 transition-colors">
             Sign In
           </a>
           <a
-            href="#get-started"
+            href="/signup"
             className="text-sm font-semibold bg-gold text-gold-foreground px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
           >
             Get Started
@@ -74,9 +74,9 @@ export function Navbar() {
               </a>
             ))}
             <div className="mt-4 flex flex-col gap-3">
-              <a href="#signin" className="text-sm font-medium text-navy">Sign In</a>
+              <a href="/login" className="text-sm font-medium text-navy">Sign In</a>
               <a
-                href="#get-started"
+                href="/signup"
                 className="text-sm font-semibold bg-gold text-gold-foreground px-4 py-2 rounded-lg text-center"
               >
                 Get Started
