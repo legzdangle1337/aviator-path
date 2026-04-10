@@ -16,8 +16,10 @@ import Dashboard from "./pages/Dashboard";
 import Schools from "./pages/Schools";
 import SchoolProfile from "./pages/SchoolProfile";
 import Compare from "./pages/Compare";
+import Admin from "./pages/Admin";
 import { CompareProvider } from "@/contexts/CompareContext";
 import { CompareBar } from "@/components/CompareBar";
+import { AdminRoute } from "@/components/admin/AdminRoute";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +41,14 @@ const App = () => (
             <Route path="/schools" element={<Schools />} />
             <Route path="/schools/:slug" element={<SchoolProfile />} />
             <Route path="/compare" element={<Compare />} />
+            <Route
+              path="/admin/*"
+              element={
+                <AdminRoute>
+                  <Admin />
+                </AdminRoute>
+              }
+            />
             <Route
               path="/dashboard/*"
               element={

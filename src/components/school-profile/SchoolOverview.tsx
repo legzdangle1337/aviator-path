@@ -1,9 +1,13 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { AdminEditButton } from "@/components/admin/AdminEditButton";
+import { SchoolEditModal } from "@/components/admin/SchoolEditModal";
 import type { Tables } from "@/integrations/supabase/types";
 
 type School = Tables<"schools">;
 
 export function SchoolOverview({ school }: { school: School }) {
+  const [editOpen, setEditOpen] = useState(false);
   const costMin = school.true_cost_min ?? school.advertised_cost_min;
   const costMax = school.true_cost_max ?? school.advertised_cost_max;
   const advMin = school.advertised_cost_min;
@@ -15,7 +19,10 @@ export function SchoolOverview({ school }: { school: School }) {
     <section id="overview" className="scroll-mt-20">
       <div className="grid md:grid-cols-3 gap-8">
         <div className="md:col-span-2 space-y-6">
-          <h2 className="text-2xl font-bold text-foreground">About {school.name}</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-2xl font-bold text-foreground">About {school.name}</h2>
+            <AdminEditButton onClick={() => setEditOpen(true)} />
+          </div>
           <div className="text-muted-foreground leading-relaxed whitespace-pre-line">
             {school.long_description || school.description || "No description available."}
           </div>
@@ -30,7 +37,10 @@ export function SchoolOverview({ school }: { school: School }) {
 
         <div className="space-y-4">
           <div className="border rounded-xl p-6 shadow-sm bg-card">
-            <h3 className="font-semibold text-foreground mb-4">True Cost Breakdown</h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold text-foreground">True Cost Breakdown</h3>
+              <AdminEditButton onClick={() => setEditOpen(true)} />
+            </div>
             <div className="space-y-2 text-sm">
               {advMin && (
                 <div className="flex justify-between">
@@ -71,6 +81,8 @@ export function SchoolOverview({ school }: { school: School }) {
           </div>
         </div>
       </div>
+
+      <SchoolEditModal school={school} open={editOpen} onOpenChange={setEditOpen} defaultTab="basic" />
     </section>
   );
 }
