@@ -130,14 +130,14 @@ export default function SchoolsPage() {
 
             {/* Results */}
             {isLoading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className="flex flex-col gap-4">
                 {Array.from({ length: 6 }).map((_, i) => (
                   <SchoolCardSkeleton key={i} />
                 ))}
               </div>
             ) : data && data.schools.length > 0 ? (
               <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="flex flex-col gap-4">
                   {data.schools.map((school) => (
                     <SchoolCard
                       key={school.id}
