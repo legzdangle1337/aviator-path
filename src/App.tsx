@@ -19,6 +19,9 @@ import CadetPrograms from "./pages/CadetPrograms";
 import CadetProgramDetail from "./pages/CadetProgramDetail";
 import Compare from "./pages/Compare";
 import Admin from "./pages/Admin";
+import Jobs from "./pages/Jobs";
+import JobDetail from "./pages/JobDetail";
+import PostJob from "./pages/PostJob";
 import { CompareProvider } from "@/contexts/CompareContext";
 import { CompareBar } from "@/components/CompareBar";
 import { AdminRoute } from "@/components/admin/AdminRoute";
@@ -42,6 +45,9 @@ const App = () => (
             <Route path="/update-password" element={<UpdatePassword />} />
             <Route path="/schools" element={<Schools />} />
             <Route path="/schools/:slug" element={<SchoolProfile />} />
+            <Route path="/jobs" element={<Jobs />} />
+            <Route path="/jobs/post" element={<PostJob />} />
+            <Route path="/jobs/:slug" element={<JobDetail />} />
             <Route path="/cadet-programs" element={<CadetPrograms />} />
             <Route path="/cadet-programs/:slug" element={<CadetProgramDetail />} />
             <Route path="/compare" element={<Compare />} />
