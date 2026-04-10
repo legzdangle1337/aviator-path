@@ -6,7 +6,7 @@ const navLinks = [
   { label: "Jobs", href: "/jobs" },
   { label: "Cadet Programs", href: "/cadet-programs" },
   { label: "Scholarships", href: "/scholarships" },
-  { label: "Financing", href: "#financing" },
+  { label: "Financing", href: "/financing" },
   { label: "Community", href: "#community" },
 ];
 
