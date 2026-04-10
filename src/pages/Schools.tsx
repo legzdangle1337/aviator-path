@@ -95,7 +95,7 @@ export default function SchoolsPage() {
         <div className="flex gap-8">
           {/* Desktop sidebar */}
           <aside className="hidden lg:block w-[280px] flex-shrink-0">
-            <div className="sticky top-20">
+            <div className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto pr-2 scrollbar-thin">
               <SchoolFiltersSidebar filters={filters} setFilters={setFilters} activeCount={activeFilterCount} clearFilters={clearFilters} />
             </div>
           </aside>
