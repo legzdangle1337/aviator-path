@@ -128,6 +128,31 @@ export function SchoolCard({ school, isSaved, onSave }: Props) {
   );
 }
 
+function CompareButton({ school }: { school: School }) {
+  const { addSchool, removeSchool, isComparing } = useCompare();
+  const active = isComparing(school.id);
+
+  return (
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        if (active) {
+          removeSchool(school.id);
+        } else {
+          addSchool(school);
+          toast.success(`${school.name} added to comparison`);
+        }
+      }}
+      className={`px-3 border rounded-lg transition-colors ${
+        active ? "bg-sky/10 border-sky text-sky" : "border-border text-muted-foreground hover:text-sky hover:border-sky"
+      }`}
+      title="Compare"
+    >
+      <Scale size={16} />
+    </button>
+  );
+}
+
 export function SchoolCardSkeleton() {
   return (
     <div className="bg-card rounded-2xl shadow-sm overflow-hidden border border-border animate-pulse">
