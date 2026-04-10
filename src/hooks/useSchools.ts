@@ -1,6 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { SchoolFilters } from "./useSchoolFilters";
+import { STATE_NAMES } from "./useSchoolFilters";
+
+// Reverse map: "Alabama" -> "AL"
+const STATE_NAME_TO_ABBR: Record<string, string> = Object.fromEntries(
+  Object.entries(STATE_NAMES).map(([abbr, name]) => [name, abbr])
+);
 
 const PAGE_SIZE = 20;
 
@@ -16,7 +22,16 @@ export function useSchools(filters: SchoolFilters) {
       // Text search
       if (filters.search) {
         const q = `%${filters.search}%`;
-        query = query.or(`name.ilike.${q},city.ilike.${q},state.ilike.${q}`);
+        // Also try to match state abbreviation from full state name
+        const stateMatch = Object.entries(STATE_NAME_TO_ABBR).find(
+          ([name]) => name.toLowerCase() === filters.search.toLowerCase()
+        );
+        const stateAbbr = stateMatch ? stateMatch[1] : null;
+        const orParts = [`name.ilike.${q}`, `city.ilike.${q}`, `state.ilike.${q}`, `description.ilike.${q}`];
+        if (stateAbbr) {
+          orParts.push(`state.eq.${stateAbbr}`);
+        }
+        query = query.or(orParts.join(","));
       }
 
       // Location
