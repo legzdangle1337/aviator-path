@@ -15,6 +15,9 @@ import UpdatePassword from "./pages/UpdatePassword";
 import Dashboard from "./pages/Dashboard";
 import Schools from "./pages/Schools";
 import SchoolProfile from "./pages/SchoolProfile";
+import Compare from "./pages/Compare";
+import { CompareProvider } from "@/contexts/CompareContext";
+import { CompareBar } from "@/components/CompareBar";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +29,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
+          <CompareProvider>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/signup" element={<SignUp />} />
@@ -34,6 +38,7 @@ const App = () => (
             <Route path="/update-password" element={<UpdatePassword />} />
             <Route path="/schools" element={<Schools />} />
             <Route path="/schools/:slug" element={<SchoolProfile />} />
+            <Route path="/compare" element={<Compare />} />
             <Route
               path="/dashboard/*"
               element={
@@ -44,6 +49,8 @@ const App = () => (
             />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <CompareBar />
+          </CompareProvider>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

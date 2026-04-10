@@ -1,4 +1,6 @@
-import { MapPin, Star, Heart } from "lucide-react";
+import { MapPin, Star, Heart, Scale } from "lucide-react";
+import { useCompare } from "@/contexts/CompareContext";
+import { toast } from "sonner";
 import type { Database } from "@/integrations/supabase/types";
 
 type School = Database["public"]["Tables"]["schools"]["Row"];
@@ -108,6 +110,7 @@ export function SchoolCard({ school, isSaved, onSave }: Props) {
           >
             View Profile
           </a>
+          <CompareButton school={school} />
           <button
             onClick={(e) => {
               e.stopPropagation();
