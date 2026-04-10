@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { useCallback, useMemo } from "react";
 
 export interface SchoolFilters {
+  search: string;
   state: string;
   partType: string;
   costMin: number;
@@ -21,6 +22,7 @@ export interface SchoolFilters {
 }
 
 const DEFAULT_FILTERS: SchoolFilters = {
+  search: "",
   state: "",
   partType: "",
   costMin: 50000,
