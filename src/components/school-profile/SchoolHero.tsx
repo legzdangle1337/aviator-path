@@ -90,7 +90,14 @@ export function SchoolHero({ school }: { school: School }) {
         </div>
 
         <div className="absolute top-4 right-4 md:top-6 md:right-6 flex gap-2">
-          <Button onClick={scrollToContact} className="bg-accent text-accent-foreground hover:bg-accent/90">Get School Info</Button>
+          {school.website && (
+            <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
+              <a href={school.website} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="w-4 h-4" /> Visit Website
+              </a>
+            </Button>
+          )}
+          <Button onClick={scrollToContact} variant="outline" className="bg-white/10 border-white text-white hover:bg-white/20">Get School Info</Button>
           <Button variant="outline" onClick={toggleSave} className="bg-white/10 border-white text-white hover:bg-white/20">
             <Heart className={`w-4 h-4 ${isSaved ? "fill-current text-red-400" : ""}`} />
           </Button>
