@@ -13,6 +13,12 @@ export function useSchools(filters: SchoolFilters) {
         .select("*", { count: "exact" })
         .eq("is_active", true);
 
+      // Text search
+      if (filters.search) {
+        const q = `%${filters.search}%`;
+        query = query.or(`name.ilike.${q},city.ilike.${q},state.ilike.${q}`);
+      }
+
       // Location
       if (filters.state) query = query.eq("state", filters.state);
 
