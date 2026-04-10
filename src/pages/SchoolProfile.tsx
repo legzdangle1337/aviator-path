@@ -6,6 +6,7 @@ import { SchoolHero } from "@/components/school-profile/SchoolHero";
 import { SchoolQuickStats } from "@/components/school-profile/SchoolQuickStats";
 import { SchoolStickyNav } from "@/components/school-profile/SchoolStickyNav";
 import { SchoolOverview } from "@/components/school-profile/SchoolOverview";
+import { SchoolTimeline } from "@/components/school-profile/SchoolTimeline";
 import { SchoolFleet } from "@/components/school-profile/SchoolFleet";
 import { SchoolPrograms } from "@/components/school-profile/SchoolPrograms";
 import { SchoolPartnerships } from "@/components/school-profile/SchoolPartnerships";
