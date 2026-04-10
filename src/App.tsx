@@ -15,6 +15,8 @@ import UpdatePassword from "./pages/UpdatePassword";
 import Dashboard from "./pages/Dashboard";
 import Schools from "./pages/Schools";
 import SchoolProfile from "./pages/SchoolProfile";
+import CadetPrograms from "./pages/CadetPrograms";
+import CadetProgramDetail from "./pages/CadetProgramDetail";
 import Compare from "./pages/Compare";
 import Admin from "./pages/Admin";
 import { CompareProvider } from "@/contexts/CompareContext";
