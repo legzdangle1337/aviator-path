@@ -126,7 +126,7 @@ export function JobCard({ job, isSaved, onSave }: Props) {
                 {JOB_TYPE_LABELS[job.job_type] || job.job_type}
               </span>
             )}
-            {job.conditional_job_offer && (
+            {(job as any).conditional_job_offer && (
               <span className="rounded-md bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-xs font-medium text-emerald-700">
                 Conditional Offer
               </span>
