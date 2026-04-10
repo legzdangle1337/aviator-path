@@ -106,6 +106,7 @@ export function useSchoolFilters() {
         const merged = { ...currentFilters, ...updates, page: updates.page ?? 1 };
 
         const params = new URLSearchParams();
+        if (merged.search) params.set("search", merged.search);
         if (merged.state) params.set("state", merged.state);
         if (merged.partType) params.set("part", merged.partType);
         if (merged.costMin !== DEFAULT_FILTERS.costMin) params.set("costMin", String(merged.costMin));
@@ -130,6 +131,7 @@ export function useSchoolFilters() {
 
   const activeFilterCount = useMemo(() => {
     let count = 0;
+    if (filters.search) count++;
     if (filters.state) count++;
     if (filters.partType) count++;
     if (filters.costMin !== DEFAULT_FILTERS.costMin || filters.costMax !== DEFAULT_FILTERS.costMax) count++;
