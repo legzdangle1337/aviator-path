@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { useCallback, useMemo } from "react";
 
 export interface SchoolFilters {
+  search: string;
   state: string;
   partType: string;
   costMin: number;
@@ -21,6 +22,7 @@ export interface SchoolFilters {
 }
 
 const DEFAULT_FILTERS: SchoolFilters = {
+  search: "",
   state: "",
   partType: "",
   costMin: 50000,
@@ -57,6 +59,7 @@ export function useSchoolFilters() {
   const filters: SchoolFilters = useMemo(() => {
     const p = searchParams;
     return {
+      search: p.get("search") || "",
       state: p.get("state") || "",
       partType: p.get("part") || "",
       costMin: Number(p.get("costMin")) || DEFAULT_FILTERS.costMin,
@@ -80,6 +83,7 @@ export function useSchoolFilters() {
     (updater: Partial<SchoolFilters> | ((prev: SchoolFilters) => Partial<SchoolFilters>)) => {
       setSearchParams((prev) => {
         const currentFilters: SchoolFilters = {
+          search: prev.get("search") || "",
           state: prev.get("state") || "",
           partType: prev.get("part") || "",
           costMin: Number(prev.get("costMin")) || DEFAULT_FILTERS.costMin,
@@ -102,6 +106,7 @@ export function useSchoolFilters() {
         const merged = { ...currentFilters, ...updates, page: updates.page ?? 1 };
 
         const params = new URLSearchParams();
+        if (merged.search) params.set("search", merged.search);
         if (merged.state) params.set("state", merged.state);
         if (merged.partType) params.set("part", merged.partType);
         if (merged.costMin !== DEFAULT_FILTERS.costMin) params.set("costMin", String(merged.costMin));
@@ -126,6 +131,7 @@ export function useSchoolFilters() {
 
   const activeFilterCount = useMemo(() => {
     let count = 0;
+    if (filters.search) count++;
     if (filters.state) count++;
     if (filters.partType) count++;
     if (filters.costMin !== DEFAULT_FILTERS.costMin || filters.costMax !== DEFAULT_FILTERS.costMax) count++;
