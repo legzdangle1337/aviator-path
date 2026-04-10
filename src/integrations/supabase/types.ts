@@ -14,6 +14,53 @@ export type Database = {
   }
   public: {
     Tables: {
+      cadet_program_experiences: {
+        Row: {
+          created_at: string | null
+          experience_text: string
+          id: string
+          is_hidden: boolean | null
+          outcome: string
+          program_id: string
+          updated_at: string | null
+          user_id: string
+          username: string | null
+          year: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          experience_text: string
+          id?: string
+          is_hidden?: boolean | null
+          outcome: string
+          program_id: string
+          updated_at?: string | null
+          user_id: string
+          username?: string | null
+          year?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          experience_text?: string
+          id?: string
+          is_hidden?: boolean | null
+          outcome?: string
+          program_id?: string
+          updated_at?: string | null
+          user_id?: string
+          username?: string | null
+          year?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cadet_program_experiences_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "cadet_programs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cadet_programs: {
         Row: {
           acceptance_rate: number | null
@@ -32,9 +79,11 @@ export type Database = {
           conditional_job_offer: boolean | null
           created_at: string | null
           description: string | null
+          hero_image_url: string | null
           housing_provided: boolean | null
           id: string
           interview_process: string | null
+          interview_questions: string[] | null
           is_active: boolean | null
           key_benefits: string[] | null
           long_description: string | null
@@ -43,7 +92,10 @@ export type Database = {
           monthly_stipend: number | null
           partner_school_slugs: string[] | null
           program_name: string
+          requirements_must: string[] | null
+          requirements_preferred: string[] | null
           slug: string
+          steps_json: Json | null
           tuition_reimbursement: number | null
           updated_at: string | null
           what_happens_after: string | null
@@ -65,9 +117,11 @@ export type Database = {
           conditional_job_offer?: boolean | null
           created_at?: string | null
           description?: string | null
+          hero_image_url?: string | null
           housing_provided?: boolean | null
           id?: string
           interview_process?: string | null
+          interview_questions?: string[] | null
           is_active?: boolean | null
           key_benefits?: string[] | null
           long_description?: string | null
@@ -76,7 +130,10 @@ export type Database = {
           monthly_stipend?: number | null
           partner_school_slugs?: string[] | null
           program_name: string
+          requirements_must?: string[] | null
+          requirements_preferred?: string[] | null
           slug: string
+          steps_json?: Json | null
           tuition_reimbursement?: number | null
           updated_at?: string | null
           what_happens_after?: string | null
@@ -98,9 +155,11 @@ export type Database = {
           conditional_job_offer?: boolean | null
           created_at?: string | null
           description?: string | null
+          hero_image_url?: string | null
           housing_provided?: boolean | null
           id?: string
           interview_process?: string | null
+          interview_questions?: string[] | null
           is_active?: boolean | null
           key_benefits?: string[] | null
           long_description?: string | null
@@ -109,7 +168,10 @@ export type Database = {
           monthly_stipend?: number | null
           partner_school_slugs?: string[] | null
           program_name?: string
+          requirements_must?: string[] | null
+          requirements_preferred?: string[] | null
           slug?: string
+          steps_json?: Json | null
           tuition_reimbursement?: number | null
           updated_at?: string | null
           what_happens_after?: string | null
