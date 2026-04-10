@@ -1,4 +1,6 @@
-import { MapPin, Star, Heart } from "lucide-react";
+import { MapPin, Star, Heart, Scale } from "lucide-react";
+import { useCompare } from "@/contexts/CompareContext";
+import { toast } from "sonner";
 import type { Database } from "@/integrations/supabase/types";
 
 type School = Database["public"]["Tables"]["schools"]["Row"];
@@ -108,6 +110,7 @@ export function SchoolCard({ school, isSaved, onSave }: Props) {
           >
             View Profile
           </a>
+          <CompareButton school={school} />
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -122,6 +125,31 @@ export function SchoolCard({ school, isSaved, onSave }: Props) {
         </div>
       </div>
     </div>
+  );
+}
+
+function CompareButton({ school }: { school: School }) {
+  const { addSchool, removeSchool, isComparing } = useCompare();
+  const active = isComparing(school.id);
+
+  return (
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        if (active) {
+          removeSchool(school.id);
+        } else {
+          addSchool(school);
+          toast.success(`${school.name} added to comparison`);
+        }
+      }}
+      className={`px-3 border rounded-lg transition-colors ${
+        active ? "bg-sky/10 border-sky text-sky" : "border-border text-muted-foreground hover:text-sky hover:border-sky"
+      }`}
+      title="Compare"
+    >
+      <Scale size={16} />
+    </button>
   );
 }
 
