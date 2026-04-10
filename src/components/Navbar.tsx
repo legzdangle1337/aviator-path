@@ -74,9 +74,9 @@ export function Navbar() {
               </a>
             ))}
             <div className="mt-4 flex flex-col gap-3">
-              <a href="#signin" className="text-sm font-medium text-navy">Sign In</a>
+              <a href="/login" className="text-sm font-medium text-navy">Sign In</a>
               <a
-                href="#get-started"
+                href="/signup"
                 className="text-sm font-semibold bg-gold text-gold-foreground px-4 py-2 rounded-lg text-center"
               >
                 Get Started
