@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { Star, MapPin, ExternalLink, Scale, Check, Heart } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Star, MapPin, Scale, Check, Heart, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCompare } from "@/contexts/CompareContext";
 import type { Database } from "@/integrations/supabase/types";
@@ -25,6 +25,12 @@ function formatCost(min?: number | null, max?: number | null) {
   return `Up to ${fmt(max!)}`;
 }
 
+function formatTimeline(min?: number | null, max?: number | null) {
+  if (!min && !max) return null;
+  if (min && max && min !== max) return `${min}–${max} mo`;
+  return `~${max || min} mo`;
+}
+
 interface Props {
   school: School;
   isSaved?: boolean;
@@ -32,6 +38,7 @@ interface Props {
 }
 
 export function SchoolCard({ school, isSaved, onSave }: Props) {
+  const navigate = useNavigate();
   const { addSchool, removeSchool, isComparing } = useCompare();
   const inCompare = isComparing(school.id);
   const partnerships = PARTNERSHIP_BADGES.filter((p) => school[p.key] === true);
@@ -39,9 +46,20 @@ export function SchoolCard({ school, isSaved, onSave }: Props) {
     school.true_cost_min ?? school.advertised_cost_min,
     school.true_cost_max ?? school.advertised_cost_max
   );
+  const timeline = formatTimeline(school.timeline_months_min, school.timeline_months_max);
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Don't navigate if clicking buttons
+    const target = e.target as HTMLElement;
+    if (target.closest("button") || target.closest("a")) return;
+    navigate(`/schools/${school.slug}`);
+  };
 
   return (
-    <div className="group rounded-xl border border-border bg-card p-5 transition-shadow hover:shadow-md">
+    <div
+      onClick={handleCardClick}
+      className="group rounded-xl border border-border bg-card p-5 transition-shadow hover:shadow-md cursor-pointer"
+    >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         {/* Left column */}
         <div className="min-w-0 flex-1">
@@ -111,6 +129,13 @@ export function SchoolCard({ school, isSaved, onSave }: Props) {
 
           {cost && <p className="text-sm font-medium text-foreground">{cost}</p>}
 
+          {timeline && (
+            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+              <Clock className="h-3.5 w-3.5" />
+              <span>{timeline} (0 → CFII)</span>
+            </div>
+          )}
+
           <div className="flex items-center gap-2">
             <Button
               variant={inCompare ? "secondary" : "outline"}
@@ -131,11 +156,6 @@ export function SchoolCard({ school, isSaved, onSave }: Props) {
               className={isSaved ? "text-accent border-accent" : ""}
             >
               <Heart className={`h-3.5 w-3.5 ${isSaved ? "fill-current" : ""}`} />
-            </Button>
-            <Button size="sm" className="gap-1.5 bg-primary text-primary-foreground hover:bg-primary/90" asChild>
-              <Link to={`/schools/${school.slug}`}>
-                View School <ExternalLink className="h-3.5 w-3.5" />
-              </Link>
             </Button>
           </div>
         </div>
@@ -162,7 +182,7 @@ export function SchoolCardSkeleton() {
           <div className="h-4 bg-muted rounded w-24" />
           <div className="flex gap-2">
             <div className="h-8 bg-muted rounded w-20" />
-            <div className="h-8 bg-muted rounded w-24" />
+            <div className="h-8 bg-muted rounded w-10" />
           </div>
         </div>
       </div>
