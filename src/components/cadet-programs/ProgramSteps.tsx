@@ -11,7 +11,7 @@ export function ProgramSteps({ program }: { program: Program }) {
   const steps: Step[] = (() => {
     try {
       const raw = program.steps_json;
-      if (Array.isArray(raw)) return raw as Step[];
+      if (Array.isArray(raw)) return raw as unknown as Step[];
       if (typeof raw === "string") return JSON.parse(raw) as Step[];
       return [];
     } catch {
