@@ -15,6 +15,8 @@ import UpdatePassword from "./pages/UpdatePassword";
 import Dashboard from "./pages/Dashboard";
 import Schools from "./pages/Schools";
 import SchoolProfile from "./pages/SchoolProfile";
+import CadetPrograms from "./pages/CadetPrograms";
+import CadetProgramDetail from "./pages/CadetProgramDetail";
 import Compare from "./pages/Compare";
 import Admin from "./pages/Admin";
 import { CompareProvider } from "@/contexts/CompareContext";
@@ -40,6 +42,8 @@ const App = () => (
             <Route path="/update-password" element={<UpdatePassword />} />
             <Route path="/schools" element={<Schools />} />
             <Route path="/schools/:slug" element={<SchoolProfile />} />
+            <Route path="/cadet-programs" element={<CadetPrograms />} />
+            <Route path="/cadet-programs/:slug" element={<CadetProgramDetail />} />
             <Route path="/compare" element={<Compare />} />
             <Route
               path="/admin/*"
