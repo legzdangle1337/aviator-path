@@ -16,13 +16,35 @@ export function useCommunityCategories() {
   });
 }
 
+async function enrichPostsWithProfiles(posts: any[]) {
+  if (!posts.length) return posts;
+  const userIds = [...new Set(posts.map((p) => p.user_id))];
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select("id, first_name, last_name, avatar_url, username")
+    .in("id", userIds);
+  const profileMap = new Map((profiles || []).map((p) => [p.id, p]));
+  return posts.map((p) => ({ ...p, profile: profileMap.get(p.user_id) || null }));
+}
+
+async function enrichCommentsWithProfiles(comments: any[]) {
+  if (!comments.length) return comments;
+  const userIds = [...new Set(comments.map((c) => c.user_id))];
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select("id, first_name, last_name, avatar_url, username")
+    .in("id", userIds);
+  const profileMap = new Map((profiles || []).map((p) => [p.id, p]));
+  return comments.map((c) => ({ ...c, profile: profileMap.get(c.user_id) || null }));
+}
+
 export function useCommunityPosts(categorySlug?: string, sort: "newest" | "top" = "newest") {
   return useQuery({
     queryKey: ["community-posts", categorySlug, sort],
     queryFn: async () => {
       let query = supabase
         .from("community_posts")
-        .select(`*, community_categories(name, slug, icon), profiles(first_name, last_name, avatar_url, username)`);
+        .select(`*, community_categories(name, slug, icon)`);
 
       if (categorySlug) {
         const { data: cat } = await supabase
@@ -41,7 +63,7 @@ export function useCommunityPosts(categorySlug?: string, sort: "newest" | "top" 
 
       const { data, error } = await query.limit(50);
       if (error) throw error;
-      return data;
+      return enrichPostsWithProfiles(data || []);
     },
   });
 }
@@ -52,11 +74,12 @@ export function useCommunityPost(postId: string | undefined) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("community_posts")
-        .select(`*, community_categories(name, slug, icon), profiles(first_name, last_name, avatar_url, username)`)
+        .select(`*, community_categories(name, slug, icon)`)
         .eq("id", postId!)
         .single();
       if (error) throw error;
-      return data;
+      const enriched = await enrichPostsWithProfiles([data]);
+      return enriched[0];
     },
     enabled: !!postId,
   });
@@ -68,11 +91,11 @@ export function useCommunityComments(postId: string | undefined) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("community_comments")
-        .select(`*, profiles(first_name, last_name, avatar_url, username)`)
+        .select(`*`)
         .eq("post_id", postId!)
         .order("created_at", { ascending: true });
       if (error) throw error;
-      return data;
+      return enrichCommentsWithProfiles(data || []);
     },
     enabled: !!postId,
   });
@@ -128,16 +151,6 @@ export function useCreateComment() {
         .select()
         .single();
       if (error) throw error;
-
-      // Increment comment count
-      await supabase.rpc("increment_comment_count" as any, { _post_id: comment.post_id }).catch(() => {
-        // Fallback: manual update
-        supabase
-          .from("community_posts")
-          .update({ comment_count: undefined as any })
-          .eq("id", comment.post_id);
-      });
-
       return data;
     },
     onSuccess: (_, vars) => {
@@ -155,14 +168,12 @@ export function useToggleUpvote() {
   return useMutation({
     mutationFn: async ({ postId, commentId, isUpvoted }: { postId?: string; commentId?: string; isUpvoted: boolean }) => {
       if (isUpvoted) {
-        // Remove upvote
         let query = supabase.from("community_upvotes").delete().eq("user_id", user!.id);
         if (postId) query = query.eq("post_id", postId);
         if (commentId) query = query.eq("comment_id", commentId);
         const { error } = await query;
         if (error) throw error;
 
-        // Decrement count
         if (postId) {
           const { data: post } = await supabase.from("community_posts").select("upvote_count").eq("id", postId).single();
           if (post) {
@@ -170,7 +181,6 @@ export function useToggleUpvote() {
           }
         }
       } else {
-        // Add upvote
         const { error } = await supabase.from("community_upvotes").insert({
           user_id: user!.id,
           post_id: postId || null,
@@ -178,7 +188,6 @@ export function useToggleUpvote() {
         });
         if (error) throw error;
 
-        // Increment count
         if (postId) {
           const { data: post } = await supabase.from("community_posts").select("upvote_count").eq("id", postId).single();
           if (post) {

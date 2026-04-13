@@ -11,7 +11,7 @@ interface CommunityPostCardProps {
 }
 
 export function CommunityPostCard({ post, isUpvoted }: CommunityPostCardProps) {
-  const profile = post.profiles;
+  const profile = post.profile;
   const category = post.community_categories;
   const displayName = profile?.first_name
     ? `${profile.first_name}${profile.last_name ? ` ${profile.last_name[0]}.` : ""}`
@@ -29,7 +29,7 @@ export function CommunityPostCard({ post, isUpvoted }: CommunityPostCardProps) {
       <UpvoteButton postId={post.id} count={post.upvote_count || 0} isUpvoted={isUpvoted} />
 
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1 flex-wrap">
           {category && (
             <Link to={`/community?category=${category.slug}`} className="hover:text-foreground">
               <Badge variant="secondary" className="text-xs font-normal gap-1">
@@ -72,7 +72,9 @@ export function CommunityPostCard({ post, isUpvoted }: CommunityPostCardProps) {
             className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-1"
           >
             {linkIcon}
-            <span className="truncate max-w-[200px]">{new URL(post.link_url).hostname}</span>
+            <span className="truncate max-w-[200px]">
+              {(() => { try { return new URL(post.link_url).hostname; } catch { return post.link_url; } })()}
+            </span>
           </a>
         )}
 

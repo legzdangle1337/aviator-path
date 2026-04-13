@@ -74,8 +74,8 @@ export default function CommunityPostPage() {
     );
   }
 
-  const profile = post.profiles;
-  const category = post.community_categories;
+  const profile = post.profile as any;
+  const category = post.community_categories as any;
   const displayName = profile?.first_name
     ? `${profile.first_name}${profile.last_name ? ` ${profile.last_name[0]}.` : ""}`
     : profile?.username || "Pilot";
@@ -99,7 +99,7 @@ export default function CommunityPostPage() {
               <UpvoteButton postId={post.id} count={post.upvote_count || 0} isUpvoted={isUpvoted} />
 
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2 flex-wrap">
                   {category && (
                     <Link to={`/community?category=${category.slug}`}>
                       <Badge variant="secondary" className="text-xs gap-1">
