@@ -291,6 +291,39 @@ export type Database = {
           },
         ]
       }
+      flight_logs: {
+        Row: {
+          aircraft: string | null
+          created_at: string
+          date: string
+          flight_type: string
+          hours: number
+          id: string
+          notes: string | null
+          user_id: string
+        }
+        Insert: {
+          aircraft?: string | null
+          created_at?: string
+          date: string
+          flight_type: string
+          hours: number
+          id?: string
+          notes?: string | null
+          user_id: string
+        }
+        Update: {
+          aircraft?: string | null
+          created_at?: string
+          date?: string
+          flight_type?: string
+          hours?: number
+          id?: string
+          notes?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       job_alerts: {
         Row: {
           created_at: string | null

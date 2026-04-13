@@ -163,6 +163,22 @@ export default function DashboardOverview({ profile }: Props) {
         </Card>
       </div>
 
+      {/* Quick action */}
+      <Link to="/dashboard/progress" className="block">
+        <Card className="border-[hsl(var(--gold))]/30 hover:border-[hsl(var(--gold))] transition-colors cursor-pointer">
+          <CardContent className="flex items-center gap-3 py-4">
+            <div className="h-10 w-10 rounded-full bg-[hsl(var(--gold))]/10 flex items-center justify-center">
+              <Plane className="h-5 w-5 text-[hsl(var(--gold))]" />
+            </div>
+            <div>
+              <p className="font-semibold text-sm text-[hsl(var(--navy))]">Log Flight Hours</p>
+              <p className="text-xs text-muted-foreground">Record your latest flight and track progress toward ATP</p>
+            </div>
+            <ArrowRight className="h-4 w-4 ml-auto text-muted-foreground" />
+          </CardContent>
+        </Card>
+      </Link>
+
       {/* Recommendations */}
       <Card>
         <CardHeader>
