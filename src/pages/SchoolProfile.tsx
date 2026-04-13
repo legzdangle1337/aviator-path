@@ -16,6 +16,7 @@ import { SchoolLocation } from "@/components/school-profile/SchoolLocation";
 import { SchoolContact } from "@/components/school-profile/SchoolContact";
 import { SchoolSimilar } from "@/components/school-profile/SchoolSimilar";
 import { SchoolClaimCta } from "@/components/school-profile/SchoolClaimCta";
+import { SchoolReviewForm } from "@/components/school-profile/SchoolReviewForm";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Helmet } from "react-helmet-async";
 
@@ -122,6 +123,7 @@ export default function SchoolProfile() {
         <SchoolPrograms school={school} />
         <SchoolFinancing school={school} />
         <SchoolReviews school={school} reviews={reviews} />
+        <SchoolReviewForm schoolId={school.id} />
         <SchoolLocation school={school} />
         <SchoolSimilar schools={similarSchools} />
         <SchoolContact school={school} />

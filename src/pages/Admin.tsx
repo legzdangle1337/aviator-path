@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/Navbar";
 import { Input } from "@/components/ui/input";
@@ -8,12 +8,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SchoolEditModal } from "@/components/admin/SchoolEditModal";
 import { JobEditModal } from "@/components/admin/JobEditModal";
-import { Pencil, Plus, Search } from "lucide-react";
+import { Check, Pencil, Plus, Search, Star, Trash2 } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 import { Helmet } from "react-helmet-async";
+import { toast } from "sonner";
+import { formatDistanceToNow } from "date-fns";
 
 type School = Tables<"schools">;
 type Job = Tables<"jobs">;
+type Review = Tables<"school_reviews">;
 
 export default function Admin() {
   const [schoolSearch, setSchoolSearch] = useState("");
@@ -21,6 +24,7 @@ export default function Admin() {
   const [editSchool, setEditSchool] = useState<School | null>(null);
   const [editJob, setEditJob] = useState<Job | null>(null);
   const [newJob, setNewJob] = useState(false);
+  const queryClient = useQueryClient();
 
   const { data: schools = [] } = useQuery({
     queryKey: ["admin-schools"],
@@ -33,12 +37,42 @@ export default function Admin() {
   const { data: jobs = [] } = useQuery({
     queryKey: ["admin-jobs"],
     queryFn: async () => {
-      // Admin needs to see all jobs including inactive, but RLS only returns is_active=true
-      // We'll show what RLS returns for now
       const { data } = await supabase.from("jobs").select("*").order("posted_date", { ascending: false });
       return data ?? [];
     },
   });
+
+  const { data: pendingReviews = [] } = useQuery({
+    queryKey: ["admin-pending-reviews"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("school_reviews")
+        .select("*, schools!school_reviews_school_id_fkey(name, slug)")
+        .eq("is_hidden", true)
+        .order("created_at", { ascending: false });
+      return (data ?? []) as (Review & { schools: { name: string; slug: string } | null })[];
+    },
+  });
+
+  const approveReview = async (id: string) => {
+    const { error } = await supabase.from("school_reviews").update({ is_hidden: false }).eq("id", id);
+    if (error) {
+      toast.error("Failed to approve review");
+    } else {
+      toast.success("Review approved");
+      queryClient.invalidateQueries({ queryKey: ["admin-pending-reviews"] });
+    }
+  };
+
+  const deleteReview = async (id: string) => {
+    const { error } = await supabase.from("school_reviews").delete().eq("id", id);
+    if (error) {
+      toast.error("Failed to delete review");
+    } else {
+      toast.success("Review deleted");
+      queryClient.invalidateQueries({ queryKey: ["admin-pending-reviews"] });
+    }
+  };
 
   const filteredSchools = schools.filter(s =>
     s.name.toLowerCase().includes(schoolSearch.toLowerCase()) ||
@@ -69,6 +103,7 @@ export default function Admin() {
           <TabsList>
             <TabsTrigger value="schools">Schools ({schools.length})</TabsTrigger>
             <TabsTrigger value="jobs">Jobs ({jobs.length})</TabsTrigger>
+            <TabsTrigger value="reviews">Reviews ({pendingReviews.length} pending)</TabsTrigger>
           </TabsList>
 
           <TabsContent value="schools" className="mt-6">
@@ -154,6 +189,68 @@ export default function Admin() {
                 </TableBody>
               </Table>
             </div>
+          </TabsContent>
+
+          <TabsContent value="reviews" className="mt-6">
+            {pendingReviews.length === 0 ? (
+              <div className="text-center py-16 text-muted-foreground">
+                <Check className="w-12 h-12 mx-auto mb-3 opacity-30" />
+                <p className="text-lg font-medium">No pending reviews</p>
+                <p className="text-sm">All reviews have been moderated.</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {pendingReviews.map((review) => (
+                  <div key={review.id} className="border rounded-xl p-5 bg-card">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <div className="flex text-accent">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <Star key={i} className={`w-4 h-4 ${i < (review.overall_rating ?? 0) ? "fill-current" : "opacity-30"}`} />
+                            ))}
+                          </div>
+                          {review.schools && (
+                            <span className="text-xs text-muted-foreground">
+                              for <span className="font-medium text-foreground">{review.schools.name}</span>
+                            </span>
+                          )}
+                        </div>
+                        {review.review_title && (
+                          <p className="font-semibold text-foreground">{review.review_title}</p>
+                        )}
+                        <p className="text-sm text-muted-foreground mt-1 line-clamp-3">{review.review_text}</p>
+                        <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
+                          {review.certificate_trained_for && (
+                            <span className="bg-muted px-2 py-0.5 rounded-full">{review.certificate_trained_for}</span>
+                          )}
+                          {review.created_at && (
+                            <span>{formatDistanceToNow(new Date(review.created_at), { addSuffix: true })}</span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex gap-2 flex-shrink-0">
+                        <Button
+                          size="sm"
+                          onClick={() => approveReview(review.id)}
+                          className="gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white"
+                        >
+                          <Check className="h-3.5 w-3.5" /> Approve
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => deleteReview(review.id)}
+                          className="gap-1.5 text-destructive hover:bg-destructive/10"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" /> Delete
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </div>
