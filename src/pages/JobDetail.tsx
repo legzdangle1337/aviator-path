@@ -9,6 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { Helmet } from "react-helmet-async";
 import { format, formatDistanceToNow } from "date-fns";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -191,6 +192,20 @@ export default function JobDetailPage() {
 
   return (
     <div className="min-h-screen bg-surface flex flex-col">
+      <Helmet>
+        <title>{`${job.job_title} at ${job.company_name} | Aviator Path`}</title>
+        <meta name="description" content={job.description?.slice(0, 155) || `${job.job_title} position at ${job.company_name}. Apply now on Aviator Path.`} />
+        <link rel="canonical" href={`https://aviatorpath.com/jobs/${job.slug}`} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://aviatorpath.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Jobs", "item": "https://aviatorpath.com/jobs" },
+            { "@type": "ListItem", "position": 3, "name": job.job_title, "item": `https://aviatorpath.com/jobs/${job.slug}` }
+          ]
+        })}</script>
+      </Helmet>
       <Navbar />
 
       <div className="bg-background border-b border-border">
