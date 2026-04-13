@@ -178,6 +178,173 @@ export type Database = {
         }
         Relationships: []
       }
+      community_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number
+          icon: string | null
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          icon?: string | null
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          icon?: string | null
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
+      community_comments: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          parent_comment_id: string | null
+          post_id: string
+          upvote_count: number
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          parent_comment_id?: string | null
+          post_id: string
+          upvote_count?: number
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          parent_comment_id?: string | null
+          post_id?: string
+          upvote_count?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_comments_parent_comment_id_fkey"
+            columns: ["parent_comment_id"]
+            isOneToOne: false
+            referencedRelation: "community_comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "community_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "community_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      community_posts: {
+        Row: {
+          body: string | null
+          category_id: string
+          comment_count: number
+          created_at: string
+          id: string
+          is_pinned: boolean
+          link_type: string | null
+          link_url: string | null
+          title: string
+          updated_at: string
+          upvote_count: number
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          category_id: string
+          comment_count?: number
+          created_at?: string
+          id?: string
+          is_pinned?: boolean
+          link_type?: string | null
+          link_url?: string | null
+          title: string
+          updated_at?: string
+          upvote_count?: number
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          category_id?: string
+          comment_count?: number
+          created_at?: string
+          id?: string
+          is_pinned?: boolean
+          link_type?: string | null
+          link_url?: string | null
+          title?: string
+          updated_at?: string
+          upvote_count?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_posts_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "community_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      community_upvotes: {
+        Row: {
+          comment_id: string | null
+          created_at: string
+          id: string
+          post_id: string | null
+          user_id: string
+        }
+        Insert: {
+          comment_id?: string | null
+          created_at?: string
+          id?: string
+          post_id?: string | null
+          user_id: string
+        }
+        Update: {
+          comment_id?: string | null
+          created_at?: string
+          id?: string
+          post_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_upvotes_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "community_comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "community_upvotes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "community_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       content: {
         Row: {
           author: string | null
