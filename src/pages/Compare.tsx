@@ -6,6 +6,7 @@ import { useCompare } from "@/contexts/CompareContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Check, X, Star, Scale, Share2, FileDown, RotateCcw, Plus } from "lucide-react";
 import { toast } from "sonner";
+import { Helmet } from "react-helmet-async";
 import type { Tables } from "@/integrations/supabase/types";
 
 type School = Tables<"schools">;
