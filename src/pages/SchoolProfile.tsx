@@ -122,9 +122,9 @@ export default function SchoolProfile() {
         <SchoolFleet school={school} />
         <SchoolPrograms school={school} />
         <SchoolFinancing school={school} />
+        <SchoolLocation school={school} />
         <SchoolReviews school={school} reviews={reviews} />
         <SchoolReviewForm schoolId={school.id} />
-        <SchoolLocation school={school} />
         <SchoolSimilar schools={similarSchools} />
         <SchoolContact school={school} />
         {!school.is_claimed && <SchoolClaimCta school={school} />}
