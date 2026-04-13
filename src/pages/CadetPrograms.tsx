@@ -14,8 +14,9 @@ export default function CadetPrograms() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
-        <title>Airline Cadet Programs 2026 — Compare All Pathways | Aviator Path</title>
-        <meta name="description" content="Compare every airline cadet program side-by-side. Southwest D225, United Aviate, Delta Propel, and more. Find your direct pathway to the airlines." />
+        <title>Airline Cadet Programs | Direct-Entry Pathways to the Airlines | Aviator Path</title>
+        <meta name="description" content="Compare airline cadet and ab initio programs from major US carriers. Review requirements, timelines, and partner schools." />
+        <link rel="canonical" href="https://aviatorpath.com/cadet-programs" />
       </Helmet>
 
       <Navbar />

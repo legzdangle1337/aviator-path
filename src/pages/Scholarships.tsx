@@ -70,8 +70,9 @@ export default function ScholarshipsPage() {
   return (
     <div className="min-h-screen bg-surface flex flex-col">
       <Helmet>
-        <title>Aviation Scholarships | Aviator Path</title>
-        <meta name="description" content="200+ aviation scholarships for aspiring pilots. Find flight training grants, airline-sponsored programs, and organization scholarships — most go unclaimed." />
+        <title>Aviation Scholarships | Find Funding for Flight Training | Aviator Path</title>
+        <meta name="description" content="Discover aviation scholarships and grants for student pilots. Filter by eligibility, award amount, and upcoming deadlines." />
+        <link rel="canonical" href="https://aviatorpath.com/scholarships" />
       </Helmet>
       <Navbar />
 
