@@ -146,6 +146,11 @@ export default function Compare() {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Compare Flight Schools Side-by-Side | Aviator Path</title>
+        <meta name="description" content="Compare flight schools side-by-side on costs, fleet, airline partnerships, reviews, and financing options." />
+        <link rel="canonical" href="https://aviatorpath.com/compare" />
+      </Helmet>
       <Navbar />
 
       <div className="max-w-7xl mx-auto px-4 py-8">
