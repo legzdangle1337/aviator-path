@@ -18,12 +18,12 @@ export function EmailCapture() {
 
       if (error) {
         if (error.code === "23505") {
-          toast.info("You're already subscribed!");
+          toast.info("You're already subscribed.");
         } else {
           toast.error("Something went wrong. Please try again.");
         }
       } else {
-        toast.success("You're in! Watch your inbox.");
+        toast.success("You're on the list! We'll be in touch.");
         setEmail("");
       }
     } catch {

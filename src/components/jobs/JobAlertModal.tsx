@@ -39,7 +39,7 @@ export function JobAlertModal({ open, onClose }: Props) {
         job_types: selectedTypes.length > 0 ? selectedTypes : null,
       });
       if (error) throw error;
-      toast.success("Job alert created! You'll receive notifications for matching jobs.");
+      toast.success("Job alert created! We'll email you when matching jobs are posted.");
       onClose();
     } catch {
       toast.error("Failed to create alert. Please try again.");
