@@ -14,14 +14,17 @@ function getHoursRange(range: string): { min: number; max: number } | null {
   }
 }
 
-export function useJobs(filters: JobFilters, userHours?: number | null) {
+export function useJobs(filters: JobFilters, userHours?: number | null, showInactive = false) {
   return useQuery({
-    queryKey: ["jobs", filters, userHours],
+    queryKey: ["jobs", filters, userHours, showInactive],
     queryFn: async () => {
       let query = supabase
         .from("jobs")
-        .select("*", { count: "exact" })
-        .eq("is_active", true);
+        .select("*", { count: "exact" });
+
+      if (!showInactive) {
+        query = query.eq("is_active", true);
+      }
 
       // Job types
       if (filters.jobTypes.length > 0) {
