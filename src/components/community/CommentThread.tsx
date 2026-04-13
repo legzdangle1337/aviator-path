@@ -17,7 +17,7 @@ interface Comment {
   body: string;
   upvote_count: number;
   created_at: string;
-  profiles: { first_name: string | null; last_name: string | null; avatar_url: string | null; username: string | null } | null;
+  profile: { first_name: string | null; last_name: string | null; avatar_url: string | null; username: string | null } | null;
 }
 
 interface CommentThreadProps {
@@ -48,7 +48,7 @@ function CommentNode({ comment, postId, depth = 0 }: { comment: Comment & { chil
   const [replyText, setReplyText] = useState("");
   const createComment = useCreateComment();
 
-  const profile = comment.profiles;
+  const profile = comment.profile;
   const displayName = profile?.first_name
     ? `${profile.first_name}${profile.last_name ? ` ${profile.last_name[0]}.` : ""}`
     : profile?.username || "Pilot";
