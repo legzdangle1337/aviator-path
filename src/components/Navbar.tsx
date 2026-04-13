@@ -19,7 +19,7 @@ const navLinks = [
   { label: "Cadet Programs", href: "/cadet-programs" },
   { label: "Scholarships", href: "/scholarships" },
   { label: "Financing", href: "/financing" },
-  { label: "Community", href: "#community" },
+  { label: "Community", href: "/community" },
 ];
 
 export function Navbar() {

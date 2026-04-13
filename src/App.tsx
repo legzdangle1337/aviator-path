@@ -25,6 +25,8 @@ import PostJob from "./pages/PostJob";
 import Scholarships from "./pages/Scholarships";
 import ScholarshipDetail from "./pages/ScholarshipDetail";
 import Financing from "./pages/Financing";
+import Community from "./pages/Community";
+import CommunityPost from "./pages/CommunityPost";
 import { CompareProvider } from "@/contexts/CompareContext";
 import { CompareBar } from "@/components/CompareBar";
 import { AdminRoute } from "@/components/admin/AdminRoute";
@@ -56,6 +58,8 @@ const App = () => (
             <Route path="/scholarships" element={<Scholarships />} />
             <Route path="/scholarships/:slug" element={<ScholarshipDetail />} />
             <Route path="/financing" element={<Financing />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/community/:postId" element={<CommunityPost />} />
             <Route path="/compare" element={<Compare />} />
             <Route
               path="/admin/*"
