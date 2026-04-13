@@ -52,6 +52,16 @@ export default function CadetProgramDetail() {
           name="description"
           content={`Complete guide to ${program.airline_name}'s ${program.program_name}. ${program.conditional_job_offer ? "Conditional Job Offer included." : ""} Requirements, interview prep, and pilot experiences.`}
         />
+        <link rel="canonical" href={`https://aviatorpath.com/cadet-programs/${program.slug}`} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://aviatorpath.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Cadet Programs", "item": "https://aviatorpath.com/cadet-programs" },
+            { "@type": "ListItem", "position": 3, "name": program.program_name, "item": `https://aviatorpath.com/cadet-programs/${program.slug}` }
+          ]
+        })}</script>
       </Helmet>
 
       <Navbar />

@@ -71,6 +71,11 @@ export default function JobsPage() {
 
   return (
     <div className="min-h-screen bg-surface flex flex-col">
+      <Helmet>
+        <title>Pilot Jobs | Major Airline, Regional & CFI Openings | Aviator Path</title>
+        <meta name="description" content="Browse pilot job openings at major airlines, regional carriers, and charter operators. Filter by flight hours, location, and salary." />
+        <link rel="canonical" href="https://aviatorpath.com/jobs" />
+      </Helmet>
       <Navbar />
 
       {/* Header */}

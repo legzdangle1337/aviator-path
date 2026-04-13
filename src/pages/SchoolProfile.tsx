@@ -89,7 +89,17 @@ export default function SchoolProfile() {
           name="description"
           content={`Complete info on ${school.name} in ${school.city}, ${school.state}. True costs: ${costStr}. ${school.aviatorpath_review_count || 0} reviews, fleet details, and airline partnerships on AviatorPath.`}
         />
+        <link rel="canonical" href={`https://aviatorpath.com/schools/${school.slug}`} />
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://aviatorpath.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Schools", "item": "https://aviatorpath.com/schools" },
+            { "@type": "ListItem", "position": 3, "name": school.name, "item": `https://aviatorpath.com/schools/${school.slug}` }
+          ]
+        })}</script>
       </Helmet>
 
       <Navbar />

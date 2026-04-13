@@ -98,6 +98,16 @@ export default function ScholarshipDetailPage() {
       <Helmet>
         <title>{scholarship.name} | Aviator Path</title>
         <meta name="description" content={scholarship.description || `${scholarship.name} from ${scholarship.organization}`} />
+        <link rel="canonical" href={`https://aviatorpath.com/scholarships/${scholarship.slug}`} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://aviatorpath.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Scholarships", "item": "https://aviatorpath.com/scholarships" },
+            { "@type": "ListItem", "position": 3, "name": scholarship.name, "item": `https://aviatorpath.com/scholarships/${scholarship.slug}` }
+          ]
+        })}</script>
       </Helmet>
       <Navbar />
 
