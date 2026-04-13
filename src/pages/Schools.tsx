@@ -11,6 +11,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Helmet } from "react-helmet-async";
 
 const SORT_OPTIONS = [
   { value: "best_match", label: "Best Match" },
@@ -58,6 +59,11 @@ export default function SchoolsPage() {
 
   return (
     <div className="min-h-screen bg-surface flex flex-col">
+      <Helmet>
+        <title>Compare Flight Schools | Costs, Reviews & Airline Partnerships | Aviator Path</title>
+        <meta name="description" content="Compare 1,100+ flight schools by cost, airline partnerships, fleet, and student reviews. Find the best flight school for your pilot career path." />
+        <link rel="canonical" href="https://aviatorpath.com/schools" />
+      </Helmet>
       <Navbar />
 
       {/* Header */}
