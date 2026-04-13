@@ -15,6 +15,7 @@ export default function FinancingPage() {
       <Helmet>
         <title>Flight Training Financing — Compare Loans & Calculate ROI | AviatorPath</title>
         <meta name="description" content="Compare flight training loans from Stratus, Sallie Mae, AOPA, Meritize & Earnest. Use our loan calculator and pilot career ROI tool to plan your aviation career." />
+        <link rel="canonical" href="https://aviatorpath.com/financing" />
       </Helmet>
       <Navbar />
       <main className="min-h-screen bg-secondary">
